@@ -1,25 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import SelectionBox from "./SelectionBox";
+import SelectedBox from "./SelectedBox";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectionList: [
+        { id: 0, name: "腹痛" },
+        { id: 1, name: "頭痛" },
+      ],
+      selectedList: [{ id: 0, name: "腹痛" }],
+    };
+
+    this.addTag = this.addTag.bind(this);
+    this.removeTag = this.removeTag.bind(this);
+  }
+
+  addTag(e) {
+    this.setState({
+      selectionList: this.state.selectionList.push(e),
+    });
+  }
+
+  removeTag(index) {
+    this.setState({
+      selectionList: this.state.selectionList.splice(index, 1),
+    });
+    console.log(this.state.selectionList);
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <SelectionBox
+          list={this.state.selectionList}
+          onAddTag={this.addTag}
+          onRemoveTag={this.removeTag}
+        />
+        <SelectedBox list={this.state.selectedList} />
+      </div>
+    );
+  }
 }
 
 export default App;
