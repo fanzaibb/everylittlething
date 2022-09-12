@@ -3,26 +3,51 @@ import React from "react";
 class SelectionBox extends React.Component {
   constructor(props) {
     super(props);
+    this.state = { inputValue: "" };
+
     this.removeTag = this.removeTag.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleInput = this.handleInput.bind(this);
   }
 
-  removeTag(index) {
-    this.props.onRemoveTag(index);
+  removeTag(id) {
+    this.props.onRemoveTag(id);
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    this.props.onAddTag(this.state.inputValue);
+    this.handleInput();
+  }
+
+  handleInput(event) {
+    this.setState({
+      inputValue: event?.target?.value || "",
+    });
   }
 
   render() {
-    const list = this.props.list.map((e, index) => {
+    const list = this.props.list.map((item) => {
       return (
-        <li key={`select${e.id}`}>
-          {e.name}
-          <span className="rm_x" onClick={() => this.removeTag(index, e)}>x</span>
+        <li key={`select_${item.id}`}>
+          {item.name} - {item.id}
+          <span className="rm_x" onClick={(e) => this.removeTag(item.id, e)}>
+            x
+          </span>
         </li>
       );
     });
 
     return (
       <section>
-        <input></input>
+        <form onSubmit={this.handleSubmit}>
+          <input
+            type="text"
+            value={this.state.inputValue}
+            onChange={this.handleInput}
+          />
+          <button type="submit">Submit</button>
+        </form>
         <div className="selection">
           <ul>{list}</ul>
         </div>

@@ -18,17 +18,19 @@ class App extends React.Component {
     this.removeTag = this.removeTag.bind(this);
   }
 
-  addTag(e) {
+  addTag(text) {
+    const newTag = {
+      name: text,
+      id: this.state.selectionList.length,
+    };
     this.setState({
-      selectionList: this.state.selectionList.push(e),
+      selectionList: this.state.selectionList.concat([newTag]),
     });
   }
 
-  removeTag(index) {
-    this.setState({
-      selectionList: this.state.selectionList.splice(index, 1),
-    });
-    console.log(this.state.selectionList);
+  removeTag(id) {
+    const selectionList = this.state.selectionList.filter((e) => e.id !== id);
+    this.setState({ selectionList });
   }
 
   render() {
